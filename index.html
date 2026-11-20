@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<!--
+  app.fohms.co.uk: the home of the FOHMS Volunteer Portal phone app.
+  v1.52.5: redesigned to match fohms.co.uk (Google Sites, Simple theme, as read from the live site on 19 Nov 2026):
+  white page, Oswald bold titles and Roboto Mono headings in the site's deep purple #20124D, Arial body text,
+  the site's gold #FFD966, and outlined buttons with 4px corners. It's embedded in fohms.co.uk/portal, so when it's
+  inside a frame there's no header of its own (the site has one) and every link opens in a new tab. Opened directly
+  (or on a phone), it shows a slim header like the site's. Rewritten around what the portal does now (v1.52).
+  A small footer link opens FOHMS Accounts for the finance team, always in its own tab, never inside the site.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>FOHMS Volunteer Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#20124D">
+  <meta name="description" content="The FOHMS Volunteer Portal: your to-dos, shifts, events, meetings and claims as a FOHMS volunteer.">
+  <link rel="icon" type="image/png" href="icons/badge-64.png">
+  <link rel="apple-touch-icon" href="icons/events-180.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root { --ink: #1c1c1c; --head: #20124D; --gold: #FFD966; --gold-soft: #fff6d9; --line: #dcdcdc; --soft: #f2f2f2; --muted: #555; --white: #fff;
+      --title: Oswald, Arial, sans-serif; --mono: "Roboto Mono", "Courier New", monospace; --body: Arial, Helvetica, sans-serif; }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { margin: 0; background: var(--white); font-family: var(--body); font-size: 17px; color: var(--ink); line-height: 1.5; }
+    .hidden { display: none !important; }
+    a { color: var(--head); }
+    a:focus-visible, button:focus-visible { outline: 3px solid var(--head); outline-offset: 2px; }
+    /* opened on its own: a slim header like the site's (gold strip, then the badge) */
+    .strip { background: var(--gold); text-align: center; font-size: 15px; padding: calc(10px + env(safe-area-inset-top, 0px)) 12px 10px; }
+    .strip a { color: #000; }
+    header { border-bottom: 1px solid var(--line); }
+    .hwrap { max-width: 980px; margin: 0 auto; padding: 8px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    a.brand { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; color: var(--head); text-decoration: none; font-weight: 700; font-size: 15px; line-height: 1.15; }
+    a.brand img { width: 44px; height: 44px; display: block; flex: none; }
+    a.home { font-size: 15px; color: var(--ink); text-decoration: none; padding: 12px 4px; }
+    a.home:hover { text-decoration: underline; }
+    html.framed .strip, html.framed header { display: none; }
+    main { max-width: 980px; margin: 0 auto; padding: 28px 16px calc(28px + env(safe-area-inset-bottom, 0px)); }
+    html.framed main { padding-top: 8px; }
+    h1 { font-family: var(--title); font-weight: 700; color: var(--head); font-size: 40px; line-height: 1.15; margin: 0 0 10px; }
+    h2 { font-family: var(--mono); font-weight: 400; color: var(--head); font-size: 23px; line-height: 1.35; margin: 0 0 12px; }
+    h3 { font-family: var(--mono); font-weight: 500; color: var(--head); font-size: 17px; line-height: 1.35; margin: 0 0 4px; }
+    p { margin: 0 0 10px; }
+    .lead { font-size: 18px; max-width: 720px; }
+    /* buttons as on the site: a thin black outline, 4px corners; the main one in the site's gold */
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 8px 22px; border: 1px solid #000; border-radius: 4px; color: #000; background: var(--white); text-decoration: none; font-family: var(--body); font-size: 17px; letter-spacing: .25px; }
+    .btn:hover { background: var(--soft); }
+    .btn.gold { background: var(--gold); }
+    .btn.gold:hover { background: #ffd24d; }
+    .btns { display: flex; flex-wrap: wrap; gap: 12px; margin: 18px 0 6px; }
+    .hero { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; padding-bottom: 26px; border-bottom: 1px solid var(--line); }
+    .hero img { width: 120px; height: 120px; border-radius: 26px; }
+    section { padding: 28px 0 6px; }
+    /* what you can do: three groups, each a grid of plain tiles */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 14px; }
+    .tile { background: var(--soft); border-radius: 4px; padding: 16px 16px 14px; border-top: 4px solid var(--gold); }
+    .tile p { margin: 0; font-size: 15.5px; color: #333; }
+    .tile b { font-weight: 700; }
+    .who { font-family: var(--mono); font-size: 14px; color: var(--muted); margin: -4px 0 12px; }
+    
+    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    ul.plain { margin: 0; padding-left: 20px; } ul.plain li { margin: 7px 0; }
+    ol { margin: 6px 0 0; padding-left: 22px; } ol li { margin: 5px 0; }
+    .note { background: var(--gold-soft); border-left: 4px solid var(--gold); padding: 12px 14px; border-radius: 4px; font-size: 15.5px; margin-top: 14px; }
+    .desk { color: var(--muted); }
+    footer { max-width: 980px; margin: 0 auto; padding: 20px 16px calc(24px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 18px; }
+    footer a { color: var(--muted); display: inline-block; padding: 12px 0; min-height: 44px; }
+    footer a.acc { font-size: 13px; }
+    @media (max-width: 720px) { h1 { font-size: 32px; } h2 { font-size: 20px; } .hero { grid-template-columns: 1fr; } .hero img { display: none; } .two { grid-template-columns: 1fr; gap: 6px; } .btns .btn { flex: 1 1 100%; } }
+  </style>
+  <script>try { if (window.self !== window.top) document.documentElement.className += ' framed'; } catch (e) { document.documentElement.className += ' framed'; }</script>
+</head>
+<body>
+  <div class="strip">Donate your time, money or your skills: every contribution counts!</div>
+  <header><div class="hwrap">
+    <a class="brand" href="https://www.fohms.co.uk/" aria-label="Friends of Henry Maynard: go to fohms.co.uk"><img src="icons/badge-64.png" alt=""><span>Friends of<br>Henry Maynard</span></a>
+    <a class="home" href="https://www.fohms.co.uk/">fohms.co.uk</a>
+  </div></header>
+  <main>
+    <div class="hero">
+      <div>
+        <h1>FOHMS Volunteer Portal</h1>
+        <p class="lead">One place for everything you do as a FOHMS volunteer: your shifts, your to-dos, claiming back what you spend, and running events. Sign in with your email address. There's no password.</p>
+        <div class="btns">
+          <a class="btn gold" id="openPortal" href="portal/">Open the Volunteer Portal <span aria-hidden="true">→</span></a>
+          <a class="btn" href="#signin">How signing in works</a>
+        </div>
+      </div>
+      <img src="icons/events-192.png" alt="">
+    </div>
+
+    <!-- v1.52.6: straight after the Open button, so phone users see it first. On a computer: one line (the home-screen steps are for phones and tablets) -->
+    <section id="desk" class="hidden"><p class="desk">The Volunteer Portal works on any computer, and best of all on your phone, added to your home screen.</p></section>
+    <section id="install" class="hidden">
+      <h2>Add it to your home screen</h2>
+      <div class="two">
+        <div id="iosSteps"><h3>iPhone or iPad (Safari)</h3>
+          <ol><li>Open the Volunteer Portal (the gold button above).</li><li>Tap the Share button (the square with an arrow).</li><li>Tap <b>Add to Home Screen</b>, then <b>Add</b>.</li></ol></div>
+        <div id="androidSteps"><h3>Android (Chrome)</h3>
+          <ol><li>Open the Volunteer Portal (the gold button above).</li><li>Tap <b>Install</b> when it's offered, or the ⋮ menu, then <b>Add to Home screen</b>.</li></ol></div>
+      </div>
+      <p class="note">The first time, sign in with the <b>6-digit code</b> from the email we send you. In the app you stay signed in for 30 days.</p>
+    </section>
+    <section id="todo">
+      <!-- v1.52.7: just the big things (the portal's Home shows each person what they can use) -->
+      <h2>What you can do</h2>
+      <div class="grid">
+        <div class="tile"><h3>Help at events</h3><p>Pick a shift, see your stall and who's helping, and let the lead know if you can't make it.</p></div>
+        <div class="tile"><h3>Claim back what you spend</h3><p>Photograph the receipt and your lead approves it. FOHMS card holders add their receipts here too.</p></div>
+        <div class="tile"><h3>Run events and initiatives</h3><p>For leads and the events team: stalls, rotas, kit, floats and approvals.</p></div>
+        <div class="tile"><h3>Meetings and the committee</h3><p>Dates, agendas and minutes, and who's on the committee. Everyone's welcome.</p></div>
+      </div>
+    </section>
+
+    <section id="signin">
+      <h2>Signing in</h2>
+      <div class="two">
+        <ul class="plain">
+          <li>Use the email address FOHMS has for you. We email you a <b>6-digit code</b> (and, in a browser, a link) that works once.</li>
+          <li>Tick <b>Keep me signed in</b> and you stay signed in on that phone or computer for 30 days.</li>
+          <li>Got a fohms.co.uk Google account? You can sign in with that instead.</li>
+        </ul>
+        <ul class="plain">
+          <li>New to FOHMS? Tap <b>Join as a volunteer</b> on the sign-in page. You can take shifts straight away, and see more once a lead has welcomed you.</li>
+          <li>No email? Check your junk folder, and that it's the same address as before.</li>
+          <li>Changed your email? Update it yourself in the portal under <b>More</b>.</li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+  <footer>
+    <span>Friends of Henry Maynard School · Registered charity 1062386 · <a href="https://www.fohms.co.uk/">fohms.co.uk</a></span>
+    <!--acc--><a class="acc" id="accLink" href="https://script.google.com/macros/s/AKfycbxDivRUZ6euV7chtwbRUNZ4yOY9T7vyiFGHRV7_KYT7wdQ2oLHqMPaX7xyaDIU1BvJXUw/exec" target="_blank" rel="noopener">Finance team: FOHMS Accounts ↗</a><!--/acc-->
+  </footer>
+  <script>
+    (function () {
+      var ua = navigator.userAgent || '';
+      var ios = /iphone|ipad|ipod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      var android = /android/i.test(ua);
+      var touch = !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches && window.matchMedia('(hover: none)').matches);
+      var standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
+      var phone = ios || android || touch;
+      // inside the fohms.co.uk page: everything opens in its own tab, never inside the site's frame (links to this page's own sections stay)
+      var framed = document.documentElement.className.indexOf('framed') >= 0;
+      Array.prototype.forEach.call(document.querySelectorAll('a[href]'), function (a) { if (a.getAttribute('href').charAt(0) !== '#' && (framed || a.id === 'accLink')) { a.target = '_blank'; a.rel = 'noopener'; } });
+      // already installed: no steps. A phone or tablet: the steps for this phone, when we can tell. A computer: one line.
+      if (standalone) return;
+      if (!phone) { document.getElementById('desk').classList.remove('hidden'); return; }
+      document.getElementById('install').classList.remove('hidden');
+      if (ios) document.getElementById('androidSteps').classList.add('hidden');
+      if (android) document.getElementById('iosSteps').classList.add('hidden');
+    })();
+  </script>
+</body>
+</html>
